@@ -1,0 +1,161 @@
+#+title: Test Driven Python Development
+#+PROPERTY: header-args :eval no
+* Chap 1 Getting Started with Test-Driven Development
+https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch01.html
+** Understanding test-driven development
+** Using TDD to build a stock alert application
+*** テストを書く
+以下をstock.pyとしてstock_alerter/に置く
+#+BEGIN_SRC python :eval no
+import unittest
+class StockTest(unittest.TestCase): # Stockのテストを保持するためのクラス
+    def test_price_of_a_new_stock_class_should_be_None(self): # <- メソッド。
+# 名前は"test"から始め、何するかを書き込む
+stock = Stock("GOOG") # Stock オブジェクトを作る
+        self.assertIsNone(stock.price)
+if __name__ == "__main__": # コマンドラインから呼ばれた時マッチし、本ファイルが実行される
+    unittest.main()
+#+END_SRC
+
+*** テストを実行してみる
+python stock_alerter/stock.py
+晴れて失敗した
+
+#+BEGIN_EXAMPLE
+E
+======================================================================
+ERROR: test_price_of_a_new_stock_class_should_be_None (__main__.StockTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "stock_alerter/stock.py", line 4, in test_price_of_a_new_stock_class_should_be_None
+    stock = Stock("GOOG")
+NameError: global name 'Stock' is not defined
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+#+END_EXAMPLE
+*** テストの失敗とエラー
+- 失敗: Fと出る
+- エラー: Eと出る
+今はStockクラスを作れていないのでEになっている
+*** テストを通過させる
+import unittestのあとに、Stockクラスを追加しよう
+#+BEGIN_SRC python :eval no
+class Stock:
+    def __init__(self, symbol):
+        self.symbol = symbol
+        self.price = None
+#+END_SRC
+テストが通った！！
+
+price を1で初期化したらFとなった。
+さっきはEだった
+*** Reorganizing the test code
+上では、定義とテストを一緒のコードに書いた。
+シンプルなプログラムならこれでいいけど、後のことを考えると分けたほうがいい。
+dir構成は、以下の2パターンから状況に応じて選べ:
+**** モジュールで配布する場合（本書）
+コードとテストは1対1対応
+#+BEGIN_EXAMPLE
+root
+|
++- package
+|  |
+|  +- file1
+|  +- file2
+|
++- test
+   |
+   +- test_file1
+   +- test_file2
+#+END_EXAMPLE
+**** コードだけ配布する場合
+#+BEGIN_EXAMPLE
+root
+|
++- package
+   |
+   +- file1
+   +- file2
+   +- test
+      |
+      +- test_file1
+      +- test_file2
+#+END_EXAMPLE
+**** dir構造変えよう
+#+BEGIN_EXAMPLE
+src
+|
++- stock_alerter
+   |
+   +- __init__.py
+   +- stock.py
+   +- tests
+      +- __init__.py
+      +- test_stock.py
+#+END_EXAMPLE
+**** モジュールテストを実行しよう
+
+- 特定のdir
+- 特定のクラス
+のテストだけ実行することもできる
+* Chap 2 Red-Green-Refactor The TDD cycle
+https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02.html
+** テストとは実行可能な要件定義である
+Stockに求める要件を追加しよう。
+- タイムスタンプと価格がある
+- 価格は正の値
+- 値が複数回更新されたら、最新値が返る
+** 一つめの要件: タイムスタンプと価格
+*** タイムスタンプと価格
+#+BEGIN_SRC python :eval no
+def test_stock_update(self):
+        """An update should set the price on the stock object    <- summary
+        We will be using the `datetime` module for the timestamp <- detail
+        """
+        goog = Stock("GOOG")                         # Arrange
+        goog.update(datetime(2014, 2, 12), price=10) # Act
+        self.assertEqual(10, goog.price)             # Assert
+
+#+END_SRC
+python -m unittest discover
+テストが失敗すると、docstringがコンソールに表示される
+
+では、クラス名とdocstring、どちらを重視するべきか？
+基本は自己説明的にせよ: クラス名で情報を現す
+
+ただ、たくさん情報を入れ込む必要があるなら、クラス名は短くして、docstringにしてもよい
+*** テストを通過させる
+#+BEGIN_SRC python :eval no
+def update(self, timestamp, price):
+      self.price = price
+#+END_SRC
+** 二つめの要件: 価格は正の値
+（中略）
+例外のテストは頻出なので、unittestはもっとかんたんな方法を提供している:
+assertRaisesには複数の書き方がある
+*** 一括書きする方法
+#+BEGIN_SRC python :eval no
+def test_negative_price_should_throw_ValueError(self):
+    goog = Stock("GOOG")
+    with self.assertRaises(ValueError):
+        goog.update(datetime(2014, 2, 13), -1)
+#+END_SRC
+*** 分かち書きする方法
+#+BEGIN_SRC python :eval no
+
+#+END_SRC
+** 三つめの要件: 最新の値を返す
+#+BEGIN_SRC python
+def test_stock_price_should_give_the_latest_price(self):
+        goog = Stock("GOOG")
+        goog.update(datetime(2014, 2, 12), price=10)
+        goog.update(datetime(2014, 2, 13), price=8.4)
+        self.assertAlmostEqual(8.4, goog.price, delta=0.0001)
+
+#+END_SRC
+
+#+INCLUDE: ".gitignore"
+* Chap 3 Code smells and Refactoring
