@@ -240,6 +240,35 @@ class StockTest(unittest.TestCase):
         self.goog.update(datetime(2014, 2, 12), price=10)
         self.goog.update(datetime(2014, 2, 13), price=8.4)
         self.assertAlmostEqual(8.4, self.goog.price, delta=0.0001)
-
 #+END_SRC
+setUp()メソッドは、各テストケースが走るたびに実行される！！
+テストの後にお掃除をするtearDown()もある。
+
+しかも、特定のクラスや特定のモジュールごとに定義することも可能:
+- setupUpClass
+- tearDownClass
+- setupUpModule
+- tearDownModule
+
+テストが実行されると、次のようにプリントされる
+#+BEGIN_EXAMPLE
+setUpModule
+  setUpClass
+       setUp
+         class 1 test 1
+       tearDown
+       setUp
+         class 1 test 2
+       tearDown
+  tearDownClass
+         class 2 test 1
+tearDownModule
+#+END_EXAMPLE
+
+各テストは独立なので、走る順序は保証されないので注意！！
+特に、オブジェクトの状態がテストの前後で変わる場合、
+テストの順序によって結果が変わることになる。
+再利用は、注意深くやること。
+** Brittle tests
+https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02s08.html
 * Chap 3 Code smells and Refactoring
