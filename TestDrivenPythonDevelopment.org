@@ -150,12 +150,12 @@ def test_negative_price_should_throw_ValueError(self):
 ** 三つめの要件: 最新の値を返す
 #+BEGIN_SRC python
 def test_stock_price_should_give_the_latest_price(self):
-        goog = Stock("GOOG")
-        goog.update(datetime(2014, 2, 12), price=10)
-        goog.update(datetime(2014, 2, 13), price=8.4)
-        self.assertAlmostEqual(8.4, goog.price, delta=0.0001)
-
+    goog = Stock("GOOG")
+    goog.update(datetime(2014, 2, 12), price=10)
+    goog.update(datetime(2014, 2, 13), price=8.4)
+    self.assertAlmostEqual(8.4, goog.price, delta=0.0001)
 #+END_SRC
+2回の更新のあと、値をチェック。
+assertAlmostEqualを使っているのは、浮動小数点で完全に一致しないため（あとで解決するんだろうな、たぶん）
 
-#+INCLUDE: ".gitignore"
 * Chap 3 Code smells and Refactoring
