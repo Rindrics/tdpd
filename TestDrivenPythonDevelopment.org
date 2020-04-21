@@ -213,6 +213,33 @@ class StockTest(unittest.TestCase):
 
 #+END_SRC
 インスタンスづくりが重複している。
-これはまとめた方がよさそう。
+これはまとめた方がよさそう:
+#+BEGIN_SRC python
+import unittest
+from ..stock import Stock
+from datetime import datetime
 
+class StockTest(unittest.TestCase):
+    def setUp(self):
+        self.goog = Stock("GOOG")
+
+    def test_price_of_a_new_stock_class_should_be_None(self):
+        self.assertIsNone(self.goog.price)
+
+    def test_stock_update(self):
+        """An update should set the price on the stock object
+        We will be using the `datetime` module for the timestamp
+        """
+        self.goog.update(datetime(2014, 2, 12), price=10)
+        self.assertEqual(10, self.goog.price)
+
+    def test_negative_price_should_throw_ValueError(self):
+        self.assertRaises(ValueError, self.goog.update, datetime(2014, 2, 13), -1)
+
+    def test_stock_price_should_give_the_latest_price(self):
+        self.goog.update(datetime(2014, 2, 12), price=10)
+        self.goog.update(datetime(2014, 2, 13), price=8.4)
+        self.assertAlmostEqual(8.4, self.goog.price, delta=0.0001)
+
+#+END_SRC
 * Chap 3 Code smells and Refactoring
