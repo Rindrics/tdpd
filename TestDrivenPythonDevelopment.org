@@ -170,4 +170,49 @@ self.assertAlmostEqual(8.4, goog.price, places=4)
 assertIsとassertEqualの違いは、同一性と等価性テスト。
 失敗する: test.assertEqual([1, 2], [1, 2])
 成功する: test.assertIs([1, 2], [1, 2])
+** Specific asserts versus generic asserts
+なぜ特定のメソッドを使うのか
+エラーメッセージを具体的にしてわかりやすくするため
+#+BEGIN_SRC python
+assertInSeq(x, seq)
+assertTrue(x in seq)
+
+assertEqual(10, x)
+assertTrue(x == 10)
+#+END_SRC
+可能な限り、具体的なメソッドを選択せよ
+** Setup and teardown
+これまで書いてきたテストを振り返ろう:
+#+BEGIN_SRC python
+import unittest
+from ..stock import Stock
+from datetime import datetime
+
+class StockTest(unittest.TestCase):
+    def test_price_of_a_new_stock_class_should_be_None(self):
+        stock = Stock("GOOG")
+        self.assertIsNone(stock.price)
+
+    def test_stock_update(self):
+        """An update should set the price on the stock object
+        We will be using the `datetime` module for the timestamp
+        """
+        goog = Stock("GOOG")
+        goog.update(datetime(2014, 2, 12), price=10)
+        self.assertEqual(10, goog.price)
+
+    def test_negative_price_should_throw_ValueError(self):
+        goog = Stock("GOOG")
+        self.assertRaises(ValueError, goog.update, datetime(2014, 2, 13), -1)
+
+    def test_stock_price_should_give_the_latest_price(self):
+        goog = Stock("GOOG")
+        goog.update(datetime(2014, 2, 12), price=10)
+        goog.update(datetime(2014, 2, 13), price=8.4)
+        self.assertAlmostEqual(8.4, goog.price, delta=0.0001)
+
+#+END_SRC
+インスタンスづくりが重複している。
+これはまとめた方がよさそう。
+
 * Chap 3 Code smells and Refactoring
