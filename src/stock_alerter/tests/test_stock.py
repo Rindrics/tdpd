@@ -1,5 +1,5 @@
 import unittest
-from ..stock import stock
+from ..stock import Stock
 
 class Stock:
     def __init__(self, symbol):
