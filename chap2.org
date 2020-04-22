@@ -200,7 +200,143 @@ priceのリストにappendするように変更する。一気に失敗が増え
 ヘルパーメソッドを定義しよう
 
 * Exploring the Rule classes
+
+** PriceRuleをちょっとみてみる
 これから実装するruleクラスをちょっと見せる。
 あくまでも説明のため。必ずテストを先に書けよ。
+#+BEGIN_SRC python
+class PriceRule:
+        """PriceRule is a rule that triggers when a stock price
+        satisfies a condition (usually greater, equal or lesser
+        than a given value)"""
+
+    def __init__(self, symbol, condition):
+        self.symbol = symbol
+        self.condition = condition
+
+    def matches(self, exchange):
+        try:
+            stock = exchange[self.symbol]
+        except KeyError:
+            return False
+        return self.condition(stock) if stock.price else False
+
+    def depends_on(self):
+        return {self.symbol}
+#+END_SRC
+
+このクラスは、以下の2つのivで初期化される
+- stock symbol
+- condition
+
+conditionは関数で、stockを引数に取る
+stockがconditionを満たすとマッチする。
+このクラスのカギは、matchesメソッド。
+
+matchesメソッドは、exchange（為替かな？）を引数としてとる。
+このexchangeは利用可能なstockが載ったただの辞書。
+
+depends_on は、stockがルールにマッチしたかどうかを返す。
+以下のような使われかたを想定している。
+#+BEGIN_SRC python
+>>> from datetime import datetime
+>>> from stock_alerter.stock import Stock
+>>> from stock_alerter.rule import PriceRule
+>>>
+>>> # First, create the exchange
+>>> exchange = {"GOOG": Stock("GOOG"), "MSFT": Stock("MSFT")}
+>>>
+>>> # Next, create the rule, checking if GOOG price > 100
+>>> rule = PriceRule("GOOG", lambda stock: stock.price > 100)
+>>>
+>>> # No updates? The rule is False
+>>> rule.matches(exchange)
+False
+>>>
+>>> # Price does not match the rule? Rule is False
+>>> exchange["GOOG"].update(datetime(2014, 2, 13), 50)
+>>> rule.matches(exchange)
+False
+>>>
+>>> # Price matches the rule? Rule is True
+>>> exchange["GOOG"].update(datetime(2014, 2, 13), 101)
+>>> rule.matches(exchange)
+True
+>>>
+#+END_SRC
+
+** テストはどうなるか
+では、テストを書いてみよう
+#+BEGIN_SRC python
+class PriceRuleTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        goog = Stock("GOOG")
+        goog.update(datetime(2014, 2, 10), 11)
+        cls.exchange = {"GOOG": goog}
+
+    def test_a_PriceRule_matches_when_it_meets_the_condition(self):
+        rule = PriceRule("GOOG", lambda stock: stock.price > 10)
+        self.assertTrue(rule.matches(self.exchange))
+
+    def test_a_PriceRule_is_False_if_the_condition_is_not_met(self):
+        rule = PriceRule("GOOG", lambda stock: stock.price < 10)
+        self.assertFalse(rule.matches(self.exchange))
+
+    def test_a_PriceRule_is_False_if_the_stock_is_not_in_the_exchange(self):
+        rule = PriceRule("MSFT", lambda stock: stock.price > 10)
+        self.assertFalse(rule.matches(self.exchange))
+
+    def test_a_PriceRule_is_False_if_the_stock_hasnt_got_an_update_yet(self):
+        self.exchange["AAPL"] = Stock("AAPL")
+        rule = PriceRule("AAPL", lambda stock: stock.price > 10)
+        self.assertFalse(rule.matches(self.exchange))
+
+    def test_a_PriceRule_only_depends_on_its_stock(self):
+        rule = PriceRule("MSFT", lambda stock: stock.price > 10)
+        self.assertEqual({"MSFT"}, rule.depends_on())
+#+END_SRC
+
+内容はだいたいわかった。
+
+一つのポイントは、setupClassメソッドをどう使っているか。
+このメソッドは、すべてのユニットテストの時に呼ばれる。
+@classmethod デコレータをつけることで、クラス内部に為替情報を保持することができる。
+self.exchangeを使ってアクセスできる。
+
+** デコレータとは
+関数を引数にとり、別の関数を返す。
+たとえば http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/ の解説が参考になる
+
+** AndRuleTest
+二つ以上のルールを一気に適用したいときに使う。
+AAPL > 10 AND GOOG > 15
+とか。
+
+テストはこうなる
+#+BEGIN_SRC python
+class AndRuleTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        goog = Stock("GOOG")
+        goog.update(datetime(2014, 2, 10), 8)
+        goog.update(datetime(2014, 2, 11), 10)
+        goog.update(datetime(2014, 2, 12), 12)
+        msft = Stock("MSFT")
+        msft.update(datetime(2014, 2, 10), 10)
+        msft.update(datetime(2014, 2, 11), 10)
+        msft.update(datetime(2014, 2, 12), 12)
+        redhat = Stock("RHT")
+        redhat.update(datetime(2014, 2, 10), 7)
+        cls.exchange = {"GOOG": goog, "MSFT": msft, "RHT": redhat}
+
+    def test_an_AndRule_matches_if_all_component_rules_are_true(self):
+        rule = AndRule(PriceRule("GOOG", lambda stock: stock.price > 8), PriceRule("MSFT", lambda stock: stock.price > 10))
+        self.assertTrue(rule.matches(self.exchange))
+#+END_SRC
+
+さて、どうやっていろんなサブルールをAndRuleにわたすのだろう？
 
 https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02s08.html
+
+
