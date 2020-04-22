@@ -270,5 +270,27 @@ tearDownModule
 テストの順序によって結果が変わることになる。
 再利用は、注意深くやること。
 ** Brittle tests
+新たな要求が来た。
+「Stockのトレンドを知りたい」
+最新の値しか保持していないからむり。
+priceをlistに変えようか？
+テストは失敗するだろう。
+
+壊れやすいテストに注意。
+計算結果のテストなど、ガチガチにすると、修正のたびにテストを直して回ることになる。
+壊れやすいテストはテストがないことより悪い。
+*** Refactoring the design
+__init__ の定義を変えないといけない。
+priceをリストとして保持する仕様にする
+テキストのインデントは間違っていたので注意！
+今まではprice = Noneとしてた
+
+こうすると、今まで成功していたprice = Noneのテストが失敗した。
+
+priceのリストにappendするように変更する。一気に失敗が増える
+そこで今までの実装をmimicするための実装が必要になる
+
 https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02s08.html
+
 * Chap 3 Code smells and Refactoring
+jj
