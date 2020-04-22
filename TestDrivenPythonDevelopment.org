@@ -291,6 +291,10 @@ priceのリストにappendするように変更する。一気に失敗が増え
 そこで今までの実装をmimicするための実装が必要になる
 
 https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02s08.html
+*** Refactoring tests
+今度は「トレンド上昇」が失敗するテストを追加しよう
+- 最後に下降
+- 最後に横ばい
 
 * Chap 3 Code smells and Refactoring
 jj

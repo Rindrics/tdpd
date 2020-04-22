@@ -33,3 +33,17 @@ class StockTrendTest(unittest.TestCase):
         for timestamp, price in zip(timestamps, prices):
             self.goog.update(timestamp, price)
         self.assertTrue(self.goog.is_increasing_trend())
+
+    def test_increasing_trend_is_true_if_price_if_price_decreses(self):
+        timestamps = [datetime(2014, 2, 11), datetime(2014, 2, 12), datetime(2014, 2, 13)]
+        prices = [8, 12, 10]
+        for timestamp, price in zip(timestamps, prices):
+            self.goog.update(timestamp, price)
+        self.assertFalse(self.goog.is_increasing_trend())
+
+    def test_increasing_trend_is_true_if_price_if_price_equal(self):
+        timestamps = [datetime(2014, 2, 11), datetime(2014, 2, 12), datetime(2014, 2, 13)]
+        prices = [8, 10, 10]
+        for timestamp, price in zip(timestamps, prices):
+            self.goog.update(timestamp, price)
+        self.assertFalse(self.goog.is_increasing_trend())
