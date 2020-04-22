@@ -305,5 +305,3 @@ priceのリストにappendするように変更する。一気に失敗が増え
 あくまでも説明のため。必ずテストを先に書けよ。
 
 https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02s08.html
-* Chap 3 Code smells and Refactoring
-jj
