@@ -1,9 +1,9 @@
+#+TITLE: Getting Started with Test-Driven Development
 #+PROPERTY: header-args :eval no
-* Chap 1 Getting Started with Test-Driven Development
-https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch01.html
-** Understanding test-driven development
-** Using TDD to build a stock alert application
-*** テストを書く
+#+URL: https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch01.html
+* Understanding test-driven development
+* Using TDD to build a stock alert application
+** テストを書く
 以下をstock.pyとしてstock_alerter/に置く
 #+BEGIN_SRC python :eval no
 import unittest
@@ -16,7 +16,7 @@ if __name__ == "__main__": # コマンドラインから呼ばれた時マッチ
     unittest.main()
 #+END_SRC
 
-*** テストを実行してみる
+** テストを実行してみる
 python stock_alerter/stock.py
 晴れて失敗した
 
@@ -35,11 +35,11 @@ Ran 1 test in 0.000s
 
 FAILED (errors=1)
 #+END_EXAMPLE
-*** テストの失敗とエラー
+** テストの失敗とエラー
 - 失敗: Fと出る
 - エラー: Eと出る
 今はStockクラスを作れていないのでEになっている
-*** テストを通過させる
+** テストを通過させる
 import unittestのあとに、Stockクラスを追加しよう
 #+BEGIN_SRC python :eval no
 class Stock:
@@ -51,11 +51,11 @@ class Stock:
 
 price を1で初期化したらFとなった。
 さっきはEだった
-*** Reorganizing the test code
+** Reorganizing the test code
 上では、定義とテストを一緒のコードに書いた。
 シンプルなプログラムならこれでいいけど、後のことを考えると分けたほうがいい。
 dir構成は、以下の2パターンから状況に応じて選べ:
-**** モジュールで配布する場合（本書）
+*** モジュールで配布する場合（本書）
 コードとテストは1対1対応
 #+BEGIN_EXAMPLE
 root
@@ -70,7 +70,7 @@ root
    +- test_file1
    +- test_file2
 #+END_EXAMPLE
-**** コードだけ配布する場合
+*** コードだけ配布する場合
 #+BEGIN_EXAMPLE
 root
 |
@@ -83,7 +83,7 @@ root
       +- test_file1
       +- test_file2
 #+END_EXAMPLE
-**** dir構造変えよう
+*** dir構造変えよう
 #+BEGIN_EXAMPLE
 src
 |
@@ -95,213 +95,8 @@ src
       +- __init__.py
       +- test_stock.py
 #+END_EXAMPLE
-**** モジュールテストを実行しよう
+*** モジュールテストを実行しよう
 
 - 特定のdir
 - 特定のクラス
 のテストだけ実行することもできる
-* Chap 2 Red-Green-Refactor The TDD cycle
-https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02.html
-** Tests are executable requirements
-テストとは実行可能な要件定義である
-Stockに求める要件を追加しよう。
-- タイムスタンプと価格がある
-- 価格は正の値
-- 値が複数回更新されたら、最新値が返る
-** Documenting our tests
-一つめの要件: タイムスタンプと価格
-*** タイムスタンプと価格
-#+BEGIN_SRC python :eval no
-def test_stock_update(self):
-        """An update should set the price on the stock object    <- summary
-        We will be using the `datetime` module for the timestamp <- detail
-        """
-        goog = Stock("GOOG")                         # Arrange
-        goog.update(datetime(2014, 2, 12), price=10) # Act
-        self.assertEqual(10, goog.price)             # Assert
-
-#+END_SRC
-python -m unittest discover
-テストが失敗すると、docstringがコンソールに表示される
-
-では、クラス名とdocstring、どちらを重視するべきか？
-基本は自己説明的にせよ: クラス名で情報を現す
-
-ただ、たくさん情報を入れ込む必要があるなら、クラス名は短くして、docstringにしてもよい
-*** テストを通過させる
-#+BEGIN_SRC python :eval no
-def update(self, timestamp, price):
-      self.price = price
-#+END_SRC
-** Testing for exceptions
-二つめの要件: 価格は正の値
-（中略）
-例外のテストは頻出なので、unittestはもっとかんたんな方法を提供している:
-assertRaisesには複数の書き方がある
-**** 一括書きする方法
-#+BEGIN_SRC python :eval no
-def test_negative_price_should_throw_ValueError(self):
-    goog = Stock("GOOG")
-    with self.assertRaises(ValueError):
-        goog.update(datetime(2014, 2, 13), -1)
-#+END_SRC
-**** 分かち書きする方法
-#+BEGIN_SRC python :eval no
-
-#+END_SRC
-** Exploring assert methods
-三つめの要件: 最新の値を返す
-#+BEGIN_SRC python
-def test_stock_price_should_give_the_latest_price(self):
-    goog = Stock("GOOG")
-    goog.update(datetime(2014, 2, 12), price=10)
-    goog.update(datetime(2014, 2, 13), price=8.4)
-    self.assertAlmostEqual(8.4, goog.price, delta=0.0001)
-#+END_SRC
-2回の更新のあと、値をチェック。
-assertAlmostEqualを使っているのは、浮動小数点で完全に一致しないため（あとで解決するんだろうな、たぶん）
-deltaではなく、placesを使う方法もある:
-self.assertAlmostEqual(8.4, goog.price, places=4)
-
-ほかにも、いろんなassertionメソッドがある。
-気になるなら本文をみてみよう。
-
-assertIsとassertEqualの違いは、同一性と等価性テスト。
-失敗する: test.assertEqual([1, 2], [1, 2])
-成功する: test.assertIs([1, 2], [1, 2])
-** Specific asserts versus generic asserts
-なぜ特定のメソッドを使うのか
-エラーメッセージを具体的にしてわかりやすくするため
-#+BEGIN_SRC python
-assertInSeq(x, seq)
-assertTrue(x in seq)
-
-assertEqual(10, x)
-assertTrue(x == 10)
-#+END_SRC
-可能な限り、具体的なメソッドを選択せよ
-** Setup and teardown
-これまで書いてきたテストを振り返ろう:
-#+BEGIN_SRC python
-import unittest
-from ..stock import Stock
-from datetime import datetime
-
-class StockTest(unittest.TestCase):
-    def test_price_of_a_new_stock_class_should_be_None(self):
-        stock = Stock("GOOG")
-        self.assertIsNone(stock.price)
-
-    def test_stock_update(self):
-        """An update should set the price on the stock object
-        We will be using the `datetime` module for the timestamp
-        """
-        goog = Stock("GOOG")
-        goog.update(datetime(2014, 2, 12), price=10)
-        self.assertEqual(10, goog.price)
-
-    def test_negative_price_should_throw_ValueError(self):
-        goog = Stock("GOOG")
-        self.assertRaises(ValueError, goog.update, datetime(2014, 2, 13), -1)
-
-    def test_stock_price_should_give_the_latest_price(self):
-        goog = Stock("GOOG")
-        goog.update(datetime(2014, 2, 12), price=10)
-        goog.update(datetime(2014, 2, 13), price=8.4)
-        self.assertAlmostEqual(8.4, goog.price, delta=0.0001)
-
-#+END_SRC
-インスタンスづくりが重複している。
-これはまとめた方がよさそう:
-#+BEGIN_SRC python
-import unittest
-from ..stock import Stock
-from datetime import datetime
-
-class StockTest(unittest.TestCase):
-    def setUp(self):
-        self.goog = Stock("GOOG")
-
-    def test_price_of_a_new_stock_class_should_be_None(self):
-        self.assertIsNone(self.goog.price)
-
-    def test_stock_update(self):
-        """An update should set the price on the stock object
-        We will be using the `datetime` module for the timestamp
-        """
-        self.goog.update(datetime(2014, 2, 12), price=10)
-        self.assertEqual(10, self.goog.price)
-
-    def test_negative_price_should_throw_ValueError(self):
-        self.assertRaises(ValueError, self.goog.update, datetime(2014, 2, 13), -1)
-
-    def test_stock_price_should_give_the_latest_price(self):
-        self.goog.update(datetime(2014, 2, 12), price=10)
-        self.goog.update(datetime(2014, 2, 13), price=8.4)
-        self.assertAlmostEqual(8.4, self.goog.price, delta=0.0001)
-#+END_SRC
-setUp()メソッドは、各テストケースが走るたびに実行される！！
-テストの後にお掃除をするtearDown()もある。
-
-しかも、特定のクラスや特定のモジュールごとに定義することも可能:
-- setupUpClass
-- tearDownClass
-- setupUpModule
-- tearDownModule
-
-テストが実行されると、次のようにプリントされる
-#+BEGIN_EXAMPLE
-setUpModule
-  setUpClass
-       setUp
-         class 1 test 1
-       tearDown
-       setUp
-         class 1 test 2
-       tearDown
-  tearDownClass
-         class 2 test 1
-tearDownModule
-#+END_EXAMPLE
-
-各テストは独立なので、走る順序は保証されないので注意！！
-特に、オブジェクトの状態がテストの前後で変わる場合、
-テストの順序によって結果が変わることになる。
-再利用は、注意深くやること。
-** Brittle tests
-新たな要求が来た。
-「Stockのトレンドを知りたい」
-最新の値しか保持していないからむり。
-priceをlistに変えようか？
-テストは失敗するだろう。
-
-壊れやすいテストに注意。
-計算結果のテストなど、ガチガチにすると、修正のたびにテストを直して回ることになる。
-壊れやすいテストはテストがないことより悪い。
-*** Refactoring the design
-__init__ の定義を変えないといけない。
-priceをリストとして保持する仕様にする
-テキストのインデントは間違っていたので注意！
-今まではprice = Noneとしてた
-
-こうすると、今まで成功していたprice = Noneのテストが失敗した。
-
-priceのリストにappendするように変更する。一気に失敗が増える
-そこで今までの実装をmimicするための実装が必要になる
-
-*** Refactoring tests
-今度は「トレンド上昇」が失敗するテストを追加しよう
-- 最後に下降
-- 最後に横ばい
-よし、通った。
-
-しかしちょっとタンマ。
-似たようなコードがコピペされてるな
-
-ヘルパーメソッドを定義しよう
-
-*** Exploring the Rule classes
-これから実装するruleクラスをちょっと見せる。
-あくまでも説明のため。必ずテストを先に書けよ。
-
-https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02s08.html

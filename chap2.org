@@ -1,15 +1,15 @@
+#+TITLE: Red-Green-Refactor The TDD cycle
 #+PROPERTY: header-args :eval no
-* Chap 2 Red-Green-Refactor The TDD cycle
 https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02.html
-** Tests are executable requirements
+* Tests are executable requirements
 テストとは実行可能な要件定義である
 Stockに求める要件を追加しよう。
 - タイムスタンプと価格がある
 - 価格は正の値
 - 値が複数回更新されたら、最新値が返る
-** Documenting our tests
+* Documenting our tests
 一つめの要件: タイムスタンプと価格
-*** タイムスタンプと価格
+** タイムスタンプと価格
 #+BEGIN_SRC python :eval no
 def test_stock_update(self):
         """An update should set the price on the stock object    <- summary
@@ -27,28 +27,28 @@ python -m unittest discover
 基本は自己説明的にせよ: クラス名で情報を現す
 
 ただ、たくさん情報を入れ込む必要があるなら、クラス名は短くして、docstringにしてもよい
-*** テストを通過させる
+** テストを通過させる
 #+BEGIN_SRC python :eval no
 def update(self, timestamp, price):
       self.price = price
 #+END_SRC
-** Testing for exceptions
+* Testing for exceptions
 二つめの要件: 価格は正の値
 （中略）
 例外のテストは頻出なので、unittestはもっとかんたんな方法を提供している:
 assertRaisesには複数の書き方がある
-**** 一括書きする方法
+*** 一括書きする方法
 #+BEGIN_SRC python :eval no
 def test_negative_price_should_throw_ValueError(self):
     goog = Stock("GOOG")
     with self.assertRaises(ValueError):
         goog.update(datetime(2014, 2, 13), -1)
 #+END_SRC
-**** 分かち書きする方法
+*** 分かち書きする方法
 #+BEGIN_SRC python :eval no
 
 #+END_SRC
-** Exploring assert methods
+* Exploring assert methods
 三つめの要件: 最新の値を返す
 #+BEGIN_SRC python
 def test_stock_price_should_give_the_latest_price(self):
@@ -68,7 +68,7 @@ self.assertAlmostEqual(8.4, goog.price, places=4)
 assertIsとassertEqualの違いは、同一性と等価性テスト。
 失敗する: test.assertEqual([1, 2], [1, 2])
 成功する: test.assertIs([1, 2], [1, 2])
-** Specific asserts versus generic asserts
+* Specific asserts versus generic asserts
 なぜ特定のメソッドを使うのか
 エラーメッセージを具体的にしてわかりやすくするため
 #+BEGIN_SRC python
@@ -79,7 +79,7 @@ assertEqual(10, x)
 assertTrue(x == 10)
 #+END_SRC
 可能な限り、具体的なメソッドを選択せよ
-** Setup and teardown
+* Setup and teardown
 これまで書いてきたテストを振り返ろう:
 #+BEGIN_SRC python
 import unittest
@@ -167,7 +167,7 @@ tearDownModule
 特に、オブジェクトの状態がテストの前後で変わる場合、
 テストの順序によって結果が変わることになる。
 再利用は、注意深くやること。
-** Brittle tests
+* Brittle tests
 新たな要求が来た。
 「Stockのトレンドを知りたい」
 最新の値しか保持していないからむり。
@@ -177,7 +177,7 @@ priceをlistに変えようか？
 壊れやすいテストに注意。
 計算結果のテストなど、ガチガチにすると、修正のたびにテストを直して回ることになる。
 壊れやすいテストはテストがないことより悪い。
-*** Refactoring the design
+** Refactoring the design
 __init__ の定義を変えないといけない。
 priceをリストとして保持する仕様にする
 テキストのインデントは間違っていたので注意！
@@ -188,7 +188,7 @@ priceをリストとして保持する仕様にする
 priceのリストにappendするように変更する。一気に失敗が増える
 そこで今までの実装をmimicするための実装が必要になる
 
-*** Refactoring tests
+** Refactoring tests
 今度は「トレンド上昇」が失敗するテストを追加しよう
 - 最後に下降
 - 最後に横ばい
@@ -199,7 +199,7 @@ priceのリストにappendするように変更する。一気に失敗が増え
 
 ヘルパーメソッドを定義しよう
 
-*** Exploring the Rule classes
+** Exploring the Rule classes
 これから実装するruleクラスをちょっと見せる。
 あくまでも説明のため。必ずテストを先に書けよ。
 
