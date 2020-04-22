@@ -295,6 +295,11 @@ https://learning.oreilly.com/library/view/test-driven-python-development/9781783
 今度は「トレンド上昇」が失敗するテストを追加しよう
 - 最後に下降
 - 最後に横ばい
+よし、通った。
 
+しかしちょっとタンマ。
+似たようなコードがコピペされてるな
+
+ヘルパーメソッドを定義しよう
 * Chap 3 Code smells and Refactoring
 jj
