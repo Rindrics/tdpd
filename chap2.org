@@ -177,7 +177,7 @@ priceをlistに変えようか？
 壊れやすいテストに注意。
 計算結果のテストなど、ガチガチにすると、修正のたびにテストを直して回ることになる。
 壊れやすいテストはテストがないことより悪い。
-** Refactoring the design
+* Refactoring the design
 __init__ の定義を変えないといけない。
 priceをリストとして保持する仕様にする
 テキストのインデントは間違っていたので注意！
@@ -188,7 +188,7 @@ priceをリストとして保持する仕様にする
 priceのリストにappendするように変更する。一気に失敗が増える
 そこで今までの実装をmimicするための実装が必要になる
 
-** Refactoring tests
+* Refactoring tests
 今度は「トレンド上昇」が失敗するテストを追加しよう
 - 最後に下降
 - 最後に横ばい
@@ -199,7 +199,7 @@ priceのリストにappendするように変更する。一気に失敗が増え
 
 ヘルパーメソッドを定義しよう
 
-** Exploring the Rule classes
+* Exploring the Rule classes
 これから実装するruleクラスをちょっと見せる。
 あくまでも説明のため。必ずテストを先に書けよ。
 
