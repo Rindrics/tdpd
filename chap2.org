@@ -1,6 +1,6 @@
 #+TITLE: Red-Green-Refactor---The TDD cycle
 #+PROPERTY: header-args :eval no
-https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02.html
+[[https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02s08.html][Go to book Page]]
 * Tests are executable requirements
 テストとは実行可能な要件定義である
 Stockに求める要件を追加しよう。
@@ -337,8 +337,3 @@ class AndRuleTest(unittest.TestCase):
 
 さて、どうやっていろんなサブルールをAndRuleコンストラクタにわたすのだろう？
 上のテストのおかげで、複数のルールを、それぞれ独立した引数として渡すデザインが固まった。
-
-
-https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02s08.html
-
-
