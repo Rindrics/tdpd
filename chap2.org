@@ -335,7 +335,9 @@ class AndRuleTest(unittest.TestCase):
         self.assertTrue(rule.matches(self.exchange))
 #+END_SRC
 
-さて、どうやっていろんなサブルールをAndRuleにわたすのだろう？
+さて、どうやっていろんなサブルールをAndRuleコンストラクタにわたすのだろう？
+上のテストのおかげで、複数のルールを、それぞれ独立した引数として渡すデザインが固まった。
+
 
 https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch02s08.html
 
