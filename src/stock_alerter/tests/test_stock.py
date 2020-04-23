@@ -24,6 +24,11 @@ class StockTest(unittest.TestCase):
         self.goog.update(datetime(2014, 2, 13), price=8.4)
         self.assertAlmostEqual(8.4, self.goog.price, delta=0.0001)
 
+    def test_stock_price_should_give_the_price_with_newest_timestamp(self):
+        self.goog.update(datetime(2014, 2, 13), price=10)
+        self.goog.update(datetime(2014, 2, 12), price=8.4)
+        self.assertAlmostEqual(10, self.goog.price, delta=0.0001)
+
 class StockTrendTest(unittest.TestCase):
     def setUp(self):
         self.goog = Stock("GOOG")
