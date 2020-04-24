@@ -1,3 +1,4 @@
 #+title: Test Driven Python Development
 * Chapter 1: [[chap1.org][Getting Started with Test-Driven Development]]
 * Chapter 2: [[chap2.org][Red-Green-Refactor---The TDD cycle]]
+* Chapter 3: [[chap3.org][Code Smells and Refactoring]]

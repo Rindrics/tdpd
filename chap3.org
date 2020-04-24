@@ -1,0 +1,4 @@
+#+TITLE: Code Smells and Refactoring
+#+PROPERTY: header-args :eval no
+[[https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch03.html][Go to book Page]]
+* A dual crossover moving average
