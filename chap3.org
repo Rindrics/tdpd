@@ -1,4 +1,16 @@
 #+TITLE: Code Smells and Refactoring
 #+PROPERTY: header-args :eval no
 [[https://learning.oreilly.com/library/view/test-driven-python-development/9781783987924/ch03.html][Go to book Page]]
+
+テストは自信をもって開発するために必須。
+過剰なテストも開発を遅らせる。
+そのためにリファクタリングが必要。
+
 * A dual crossover moving average
+* Implementing the dual crossover moving average
+* Identifying code smells
+* Refactoring
+* The importance of tests
+* Excercise
+* Wrapping up
+* Summary
