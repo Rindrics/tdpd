@@ -366,3 +366,11 @@ collectionのnamedtupleをバイナリソートしていた！
 エレガントだ...。
 変更も少ない。
 まずnamedtupleを知らなかった
+
+* Summary
+以下を学んだ:
+- 基本的なTDDサイクル
+- Arrange-act-Assertの流れ
+- セットアップと掃除の方法
+- 壊れやすいテストを防ぐ方法
+- 基本的なリファクタリング
