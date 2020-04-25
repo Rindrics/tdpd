@@ -26,6 +26,7 @@ get_crossover_signalメソッドを実装する
 - データが11未満の場合、長期トレンド算出に十分でないと判断して0を返す
 * Identifying code smells
 本文には、リファクタリング前の、テスト通過直後のコードが示されている。
+https://github.com/siddhi/test_driven_python/tree/1eaebe7fb80e9e5762d570d2ed2ba2571a253e80/stock_alerter
 読みにくい！
 やはりリファクタリングは必須なのだ。
 ** このコードの問題点はどこか？
@@ -36,6 +37,7 @@ get_crossover_signalメソッドを実装する
 - マジックナンバー
 - 重複
 * Refactoring
+
 ** The Rename Variable and Rename Method refactorings
 ** Commenting Styles
 ** Replace Magic Literals with Constants
