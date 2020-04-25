@@ -36,6 +36,16 @@ get_crossover_signalメソッドを実装する
 - マジックナンバー
 - 重複
 * Refactoring
+** The Rename Variable and Rename Method refactorings
+** Commenting Styles
+** Replace Magic Literals with Constants
+** The Extract Method refactoring
+** Replace Calculation with Temporary Variable
+** Extract Conditional to Method
+** The DRY principle
+** Single Responsibility Principle
+** Extract Class
+** Move Method to Class
 * The importance of tests
 * Excercise
 * Wrapping up
