@@ -41,6 +41,10 @@ https://github.com/siddhi/test_driven_python/tree/1eaebe7fb80e9e5762d570d2ed2ba2
 "cpl"がわかりにくい。
 closing_price_listにしよう。
 ** Commenting Styles
+コメントがある事自体、bad smellの一つ。
+コメントがないと読みづらいコードである可能性がある
+
+ここでは、コメントはそのままにしておく
 ** Replace Magic Literals with Constants
 ** The Extract Method refactoring
 ** Replace Calculation with Temporary Variable
