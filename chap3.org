@@ -47,6 +47,8 @@ closing_price_listにしよう。
 ここでは、コメントはそのままにしておく
 ** Replace Magic Literals with Constants
 まずは長期:10日と短期5日の数字から
+
+つづいて、買い、売り、中立の3シグナルを、Enumクラスを使ってわかりやすくする
 ** The Extract Method refactoring
 ** Replace Calculation with Temporary Variable
 ** Extract Conditional to Method
