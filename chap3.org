@@ -7,8 +7,34 @@
 そのためにリファクタリングが必要。
 
 * A dual crossover moving average
+Dual Crossover Moving Average: 短期トレンドの傾向を調べる方法（長期トレンドと比較して）
+売り買いの傾向がわかる 短期トレンドが長期トレンドを交差するときの向きから:
+- ↑: 買い傾向
+- ↓: 売り傾向
+
+さぁ、実装しよう
 * Implementing the dual crossover moving average
+get_crossover_signalメソッドを実装する
+ Stock クラスに
+
+要求は以下:
+- 日付を引数としてとり、crosseverがあるかどうかを返す
+- 買い傾向なら1を返す
+- 売り傾向なら-1を返す
+- 交点がないなら0
+- その日に更新がないなら、最近の日付を使う
+- データが11未満の場合、長期トレンド算出に十分でないと判断して0を返す
 * Identifying code smells
+本文には、リファクタリング前の、テスト通過直後のコードが示されている。
+読みにくい！
+やはりリファクタリングは必須なのだ。
+** このコードの問題点はどこか？
+- 長いメソッド
+- わかりにくい名前
+- 複雑な条件分岐
+- わかりにくいコメント
+- マジックナンバー
+- 重複
 * Refactoring
 * The importance of tests
 * Excercise
