@@ -37,8 +37,9 @@ https://github.com/siddhi/test_driven_python/tree/1eaebe7fb80e9e5762d570d2ed2ba2
 - マジックナンバー
 - 重複
 * Refactoring
-
 ** The Rename Variable and Rename Method refactorings
+"cpl"がわかりにくい。
+closing_price_listにしよう。
 ** Commenting Styles
 ** Replace Magic Literals with Constants
 ** The Extract Method refactoring
