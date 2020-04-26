@@ -57,11 +57,16 @@ class Stock:
         if len(closing_price_list) < NUM_DAYS:
             return StockSignal.neutral
 
+        long_term_series = closing_price_list[-self.LONG_TERM_TIMESPAN:]
+        prev_long_term_series = closing_price_list[-self.LONG_TERM_TIMESPAN-1:-1]
+        short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN:]
+        prev_short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN-1:-1]
+
         # BUY signal
-        if sum([update.price for update in closing_price_list[-self.LONG_TERM_TIMESPAN-1:-1]])/10 \
-                > sum([update.price for update in closing_price_list[-self.SHORT_TERM_TIMESPAN-1:-1]])/5 \
-            and sum([update.price for update in closing_price_list[-self.LONG_TERM_TIMESPAN:]])/10 \
-                < sum([update.price for update in closing_price_list[-self.SHORT_TERM_TIMESPAN:]])/5:
+        if sum([update.price for update in prev_long_term_series])/10 \
+                > sum([update.price for update in prev_short_term_series])/5 \
+            and sum([update.price for update in long_term_series])/10 \
+                < sum([update.price for update in short_term_series])/5:
                     return StockSignal.buy
 
         # BUY signal

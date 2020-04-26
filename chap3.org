@@ -61,6 +61,8 @@ closing_price_listにしよう。
 closing_price_list が何度も使われているので、これを返すメソッドを定義しよう。
 
 ** Replace Calculation with Temporary Variable
+処理を変数に格納することによって、名前をつけよう
+
 ** Extract Conditional to Method
 ** The DRY principle
 ** Single Responsibility Principle
