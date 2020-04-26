@@ -50,6 +50,16 @@ closing_price_listにしよう。
 
 つづいて、買い、売り、中立の3シグナルを、Enumクラスを使ってわかりやすくする
 ** The Extract Method refactoring
+メソッドをリファクタリングする手順:
+- テストを実行
+- ブロックの前にも利用されている変数を特定する; これらはパラメータとして渡されるべき
+- ブロックの後にも利用されている変数を特定する; これらは返り値となるべきである
+- 適切な値を返す新しいメソッドを作る
+- コードブロックをメソッドの中に入れ、テストからメソッドを呼び出す
+- テストを再実行する
+
+closing_price_list が何度も使われているので、これを返すメソッドを定義しよう。
+
 ** Replace Calculation with Temporary Variable
 ** Extract Conditional to Method
 ** The DRY principle
