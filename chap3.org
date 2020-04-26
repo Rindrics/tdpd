@@ -64,7 +64,10 @@ closing_price_list が何度も使われているので、これを返すメソ�
 処理を変数に格納することによって、名前をつけよう
 
 ** Extract Conditional to Method
+条件式をメソッドにして読みやすくする
+（これでもけっこう重複があるような...）
 ** The DRY principle
+
 ** Single Responsibility Principle
 ** Extract Class
 ** Move Method to Class
