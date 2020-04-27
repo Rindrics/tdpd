@@ -111,6 +111,8 @@ Extract Classリファクタリングのステップは以下:
 既存のテストをこわさないように、名前はprice_historyではなくhistoryとしよう。
 （importを忘れずに！）
 
+Stockクラスのupdate()メソッドをTimeSeriesに移植しよう。
+
 ** Move Method to Class
 * The importance of tests
 * Excercise
