@@ -72,6 +72,22 @@ closing_price_list が何度も使われているので、これを返すメソ�
 ということで。
 
 ** Single Responsibility Principle
+さてこれまてリファクタリングをしてきたけど、どれも細々したものだった。
+どれも劇的なデザイン改善ではなかった
+
+クラスが汚くなる原因はだいたい、Single Responsibility Principle (SRP) に従っていないからだ。
+一つのクラスには一つのことをやらせろ。
+
+いま、Stockクラスにやらせていることは:
+- 特定の銘柄の価格履歴を保存する
+- 銘柄が特定の条件を満たしているか調べる
+
+しかしさらに、次のこともやらせている:
+- 1日ごとの終値を計算する
+- 移動平均を計算する
+
+これら二つは、独立したクラスにすべきだ！（まじか）
+
 ** Extract Class
 ** Move Method to Class
 * The importance of tests
