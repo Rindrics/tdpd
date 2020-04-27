@@ -105,6 +105,12 @@ Extract Classリファクタリングのステップは以下:
 
 さて、時系列に関することは全部TimeSeriesクラスに分離しよう。
 
+これまでは株価の履歴を保存するのにprice_historyというリストを使っていたが、
+これからはTimeSeriesクラスにやらせよう。
+まず、ivをStockクラスにつくってみよう。
+既存のテストをこわさないように、名前はprice_historyではなくhistoryとしよう。
+（importを忘れずに！）
+
 ** Move Method to Class
 * The importance of tests
 * Excercise

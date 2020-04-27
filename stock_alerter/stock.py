@@ -2,6 +2,8 @@ import bisect
 import collections
 from datetime import timedelta
 from enum import Enum
+from .timeseries import TimeSeries
+
 
 PriceEvent = collections.namedtuple("PriceEvent", ["timestamp", "price"])
 
@@ -17,6 +19,7 @@ class Stock:
     def __init__(self, symbol):
         self.symbol = symbol
         self.price_history = []
+        self.history = TimeSeries()
 
     @property
     def price(self):
