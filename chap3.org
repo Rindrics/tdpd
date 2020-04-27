@@ -67,6 +67,9 @@ closing_price_list が何度も使われているので、これを返すメソ�
 条件式をメソッドにして読みやすくする
 （これでもけっこう重複があるような...）
 ** The DRY principle
+そう、さっき作ったメソッドは、ほぼ同じことをしていた; 不等号の向きが違うだけだった
+なら、比較の順番を変えれば、全く同じ構造になるじゃないか！
+ということで。
 
 ** Single Responsibility Principle
 ** Extract Class
