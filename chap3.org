@@ -111,7 +111,19 @@ Extract Classリファクタリングのステップは以下:
 既存のテストをこわさないように、名前はprice_historyではなくhistoryとしよう。
 （importを忘れずに！）
 
-Stockクラスのupdate()メソッドをTimeSeriesに移植しよう。
+Stockクラスのupdate()メソッドからTimeSeriesクラスを呼び出そう。
+ここで注意すべきは、PriceEventを呼んでいる古い行はまだそのまま残しておくこと。
+もちろんテストを壊さないため。
+
+StockcクラスからTimeSeriesクラスの呼び出しがうまくいったら、
+Stock.price_historyを呼んでいるところを全部TimeSeriesクラスの呼び出しに書き換えよう。
+最初にやるべきことは、ディクショナリを作ること。
+なぜなら、いまStockのpriceメソッドは次のようにインデックス指定になっているから
+#+BEGIN_SRC python
+        return self.price_history[-1].price \
+#+END_SRC
+
+Stockのpriceメソッドとis_increasing_trendメソッドからStockを呼び出し、テスト通過を確認して終了
 
 ** Move Method to Class
 * The importance of tests
