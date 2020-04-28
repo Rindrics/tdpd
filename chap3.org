@@ -160,6 +160,12 @@ TimeSeriesクラスには、self.seriesというivが備わっているのて、
 get_closing_price_listメソッドではこのivを使えばいい。
 やってみよう。
 
+パラメータをivに置き換えたら、テストが失敗するようになってしまった。
+でもエラーメッセージをよく読もう。
+priceが無いと言っている。
+TimeSeriesクラスでは、priceではなくvalueという名前で値を提供していたのだった。
+Stockクラスのローカル変数を書き換えよう。
+
 * The importance of tests
 * Excercise
 * Wrapping up
