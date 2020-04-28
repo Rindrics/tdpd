@@ -166,6 +166,9 @@ priceが無いと言っている。
 TimeSeriesクラスでは、priceではなくvalueという名前で値を提供していたのだった。
 Stockクラスのローカル変数を書き換えよう。
 
+以上で、Stockクラスからprice_historyを消すことに成功した！:tada:
+
+
 * The importance of tests
 * Excercise
 * Wrapping up

@@ -3,10 +3,6 @@ import collections
 from enum import Enum
 from .timeseries import TimeSeries
 
-
-PriceEvent = collections.namedtuple("PriceEvent", ["timestamp", "price"])
-
-
 class StockSignal(Enum):
      buy = 1
      neutral = 0
@@ -15,9 +11,9 @@ class StockSignal(Enum):
 class Stock:
     LONG_TERM_TIMESPAN = 10
     SHORT_TERM_TIMESPAN = 5
+
     def __init__(self, symbol):
         self.symbol = symbol
-        self.price_history = []
         self.history = TimeSeries()
 
     @property
@@ -30,7 +26,6 @@ class Stock:
     def update(self, timestamp, price):
         if price < 0:
             raise ValueError("price should not be negative")
-        bisect.insort_left(self.price_history, PriceEvent(timestamp, price))
         self.history.update(timestamp, price)
 
     def is_increasing_trend(self):
