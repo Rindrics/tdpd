@@ -1,6 +1,5 @@
 import bisect
 import collections
-from datetime import timedelta
 from enum import Enum
 from .timeseries import TimeSeries
 
@@ -37,22 +36,6 @@ class Stock:
     def is_increasing_trend(self):
         return self.history[-3].value < self.history[-2].value < self.history[-1].value
 
-
-    def _get_closing_price_list(self, on_date, num_days):
-        closing_price_list = []
-        for i in range(num_days):
-            chk = on_date.date() - timedelta(i)
-            for price_event in reversed(self.price_history):
-                if price_event.timestamp.date() > chk:
-                    pass
-                if price_event.timestamp.date() == chk:
-                    closing_price_list.insert(0, price_event)
-                    break
-                if price_event.timestamp.date() < chk:
-                    closing_price_list.insert(0, price_event)
-                    break
-        return closing_price_list
-
     def _is_crossover_below_to_above(self, prev_ma,
                                      prev_reference_ma,
                                      current_ma, current_reference_ma):
@@ -63,8 +46,7 @@ class Stock:
     def get_crossover_signal(self, on_date):
         NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
 
-        closing_price_list = \
-            self._get_closing_price_list(on_date, NUM_DAYS)
+        closing_price_list = self.history.get_closing_price_list(on_date, NUM_DAYS, self.price_history)
         # Return NEUTRAL signal
         if len(closing_price_list) < NUM_DAYS:
             return StockSignal.neutral
