@@ -151,6 +151,14 @@ _get_closing_price_listメソッドだ。
 
 この変更に伴い、Stockクラスのget_crossover_signalも変更する必要がある。
 
+さて。テストを通過させるために今しがた加えたパラメータprice_historyをリファクタリングしよう。
+#+BEGIN_SRC python
+    def get_closing_price_list(self, on_date, num_days, price_history):
+
+#+END_SRC
+TimeSeriesクラスには、self.seriesというivが備わっているのて、
+get_closing_price_listメソッドではこのivを使えばいい。
+やってみよう。
 
 * The importance of tests
 * Excercise
