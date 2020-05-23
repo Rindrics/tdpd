@@ -30,5 +30,7 @@ class TimeSeries:
                     break
         return closing_price_list
 
-    class MovingAgerage:
-        pass
+class MovingAverage:
+    def __init__(self, series, timespan):
+        self.series = series
+        self.timespan = timespan
